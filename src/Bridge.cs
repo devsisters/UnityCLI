@@ -8,10 +8,18 @@ namespace CLI
 
         public static Bridge TryInstall(int initialPort, string welcomeMessage)
         {
+            const string name = "CLI (Singleton)";
+
             if (Instance != null) return Instance;
-            Instance = FindObjectOfType<Bridge>();
-            if (Instance != null) return Instance;
-            var singleton = new GameObject("CLI (Singleton)");
+
+            var inst = FindObjectOfType<Bridge>();
+            if (inst != null && inst.name == name)
+            {
+                Instance = inst;
+                return Instance;
+            }
+
+            var singleton = new GameObject(name);
             Instance = singleton.AddComponent<Bridge>();
             Instance.InitialPort = initialPort;
             Instance.WelcomeMessage = welcomeMessage;
