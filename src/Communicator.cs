@@ -156,6 +156,8 @@ namespace CLI
             return null;
         }
 
+        private static char[] _trimTokens = new[] { ' ', '\r', '\n', };
+
         private void AddAndLoopReadStream(NetworkStream stream)
         {
             lock (_streams)
@@ -177,6 +179,7 @@ namespace CLI
                     break;
                 }
 
+                cmd = cmd.Trim(_trimTokens);
                 var job = new Job(stream, cmd);
                 lock (_concurrentJobs) _concurrentJobs.Add(job);
             }

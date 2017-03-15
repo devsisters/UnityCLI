@@ -2,17 +2,17 @@ using UnityEngine;
 
 namespace CLI
 {
-    public class CLI : MonoBehaviour
+    public class Bridge : MonoBehaviour
     {
-        public static CLI Instance;
+        public static Bridge Instance;
 
-        public static CLI TryInstall(int initialPort, string welcomeMessage)
+        public static Bridge TryInstall(int initialPort, string welcomeMessage)
         {
             if (Instance != null) return Instance;
-            Instance = FindObjectOfType<CLI>();
+            Instance = FindObjectOfType<Bridge>();
             if (Instance != null) return Instance;
             var singleton = new GameObject("CLI (Singleton)");
-            Instance = singleton.AddComponent<CLI>();
+            Instance = singleton.AddComponent<Bridge>();
             Instance.InitialPort = initialPort;
             Instance.WelcomeMessage = welcomeMessage;
             Instance.Init();
@@ -20,7 +20,7 @@ namespace CLI
             return Instance;
         }
 
-        public static void Unstall()
+        public static void Uninstall()
         {
             if (Instance == null) return;
             Destroy(Instance.gameObject);
@@ -28,6 +28,7 @@ namespace CLI
 
         public int InitialPort = 6670;
         public string WelcomeMessage;
+        public ExecuteCmd ExecuteCmd;
         private Communicator _communicator;
 
         private void Init()
@@ -37,8 +38,7 @@ namespace CLI
             if (WelcomeMessage != null)
                 welcomeMsg = System.Text.Encoding.UTF8.GetBytes(WelcomeMessage);
             _communicator = Communicator.Start(
-                InitialPort,
-                ExecuteCmd,
+                InitialPort, DoExecuteCmd,
                 welcomeMessage: welcomeMsg);
         }
 
@@ -54,10 +54,11 @@ namespace CLI
             _communicator.ProcessJobs();
         }
 
-        private static Result ExecuteCmd(Command cmd)
+        private Result DoExecuteCmd(Command cmd)
         {
-            // TODO
-            return Result.Success();
+            if (ExecuteCmd == null)
+                return Result.Error("ExecuteCmd is null");
+            return ExecuteCmd(cmd);
         }
     }
 }
