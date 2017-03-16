@@ -1,0 +1,11 @@
+{
+    "files.exclude": {
+        "**/.gitignore": true,
+        "**/*.meta": true,
+        "**/*.mdb": true,
+        "bin": true,
+        "obj": true,
+        "lib": true,
+        "example": true
+    }
+}
