@@ -1,5 +1,23 @@
 ﻿using UnityEngine;
 
+public static class Binding1
+{
+    [CLI.Bind]
+    public static CLI.Result Foo(int i)
+    {
+        return CLI.Result.Success("Foo called: " + i);
+    }
+}
+
+public static class Binding2
+{
+    [CLI.Bind]
+    public static CLI.Result Goo(string str)
+    {
+        return CLI.Result.Success("Goo called: " + str);
+    }
+}
+
 public class Main : MonoBehaviour
 {
     public int SingletonPort = 1234;
@@ -15,10 +33,12 @@ public class Main : MonoBehaviour
     private void OnEnable()
     {
         var instance = CLI.Bridge.TryInstall(SingletonPort, welcomeMessage: "I'm singleton");
-        instance.ExecuteCmd = ExecuteSingleton;
-        Channel1.ExecuteCmd = ExecuteChannel1;
-        Channel2.ExecuteCmd = ExecuteChannel2;
-        Channel3.ExecuteCmd = ExecuteChannel3;
+        instance.Executer = new CLI.CustomExecuter(ExecuteSingleton);
+        Channel1.Executer = new CLI.ClassExecuter(typeof(Binding1));
+        Channel2.Executer = new CLI.ClassExecuter(typeof(Binding2));
+        var exe = new CLI.Executer();
+        exe.Bind(typeof(Binding1)).Bind(typeof(Binding2));
+        Channel3.Executer = exe;
     }
 
     private void OnDestroy()
@@ -26,9 +46,9 @@ public class Main : MonoBehaviour
         CLI.Bridge.Uninstall();
     }
 
-    private CLI.Result ExecuteSingleton(CLI.Command cmd)
+    private CLI.Result ExecuteSingleton(CLI.Command cmd, int argsFrom)
     {
-        switch (cmd.Exe)
+        switch (cmd[argsFrom])
         {
             case "realtimeSinceStartup":
                 return CLI.Result.Success("now: " + Time.realtimeSinceStartup);
@@ -41,17 +61,12 @@ public class Main : MonoBehaviour
         }
     }
 
-    private CLI.Result ExecuteChannel1(CLI.Command cmd)
-    {
-        return CLI.Result.Success("[Ch1] " + cmd.Raw);
-    }
-
-    private CLI.Result ExecuteChannel2(CLI.Command cmd)
+    private CLI.Result ExecuteChannel2(CLI.Command cmd, int argsFrom)
     {
         return CLI.Result.Success("[Ch2] " + cmd.Raw);
     }
 
-    private CLI.Result ExecuteChannel3(CLI.Command cmd)
+    private CLI.Result ExecuteChannel3(CLI.Command cmd, int argsFrom)
     {
         return CLI.Result.Success("[Ch3] " + cmd.Raw);
     }

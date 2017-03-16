@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CLI
 {
-    public class Bridge : MonoBehaviour
+    public sealed class Bridge : MonoBehaviour
     {
         public static Bridge Instance;
 
@@ -36,8 +36,8 @@ namespace CLI
 
         public int InitialPort = 6670;
         public string WelcomeMessage;
-        public ExecuteCmd ExecuteCmd;
         private Communicator _communicator;
+        public IExecuter Executer;
 
         private void Init()
         {
@@ -46,7 +46,7 @@ namespace CLI
             if (WelcomeMessage != null)
                 welcomeMsg = System.Text.Encoding.UTF8.GetBytes(WelcomeMessage);
             _communicator = Communicator.Start(
-                InitialPort, DoExecuteCmd,
+                InitialPort, ExecuteCmd,
                 welcomeMessage: welcomeMsg);
         }
 
@@ -62,11 +62,11 @@ namespace CLI
             _communicator.ProcessJobs();
         }
 
-        private Result DoExecuteCmd(Command cmd)
+        private Result ExecuteCmd(Command cmd)
         {
-            if (ExecuteCmd == null)
+            if (Executer == null)
                 return Result.Error("ExecuteCmd is null");
-            return ExecuteCmd(cmd);
+            return Executer.Execute(cmd, 0);
         }
     }
 }
