@@ -1,6 +1,6 @@
-[![][CLIImage]]
-
 # UnityCLI
+![][CLIImage]
+
 Unity TCP CLI communication for debugging
 
 # About This Plugin
