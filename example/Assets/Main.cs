@@ -28,7 +28,17 @@ public class Main : MonoBehaviour
 
     private CLI.Result ExecuteSingleton(CLI.Command cmd)
     {
-        return CLI.Result.Success(cmd.Raw);
+        switch (cmd.Exe)
+        {
+            case "realtimeSinceStartup":
+                return CLI.Result.Success("now: " + Time.realtimeSinceStartup);
+            case "timescale":
+                var newTimescale = float.Parse(cmd.Args[0]);
+                Time.timeScale = newTimescale;
+                return CLI.Result.Success("set timescale: " + newTimescale);
+            default:
+                return CLI.Result.InvalidCmd(cmd);
+        }
     }
 
     private CLI.Result ExecuteChannel1(CLI.Command cmd)
