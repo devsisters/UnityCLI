@@ -221,6 +221,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d70c22f98c88143b0af892f14bf874a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SingletonPort: 1234
+  Channel1: {fileID: 1968311859}
+  Channel2: {fileID: 1968311858}
+  Channel3: {fileID: 1968311857}
 --- !u!114 &1968311857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,7 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitialPort: 3333
-  WelcomeMessage: 3333
+  WelcomeMessage: I'm Channel3
 --- !u!114 &1968311858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,7 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitialPort: 2222
-  WelcomeMessage: 2222
+  WelcomeMessage: I'm Channel2
 --- !u!114 &1968311859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,4 +263,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InitialPort: 1111
-  WelcomeMessage: 1111
+  WelcomeMessage: I'm Channel1
