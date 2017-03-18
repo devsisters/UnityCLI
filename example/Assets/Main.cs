@@ -18,6 +18,40 @@ public static class Binding2
     }
 }
 
+namespace Game
+{
+    public static class Wallet
+    {
+        public static int Money;
+    }
+}
+
+namespace CLIBindings
+{
+    public static class Wallet
+    {
+        [CLI.Bind]
+        public static CLI.Result Add(int amount)
+        {
+            Game.Wallet.Money += amount;
+            return CLI.Result.Success("now: " + Game.Wallet.Money);
+        }
+
+        [CLI.Bind]
+        public static CLI.Result Set(int amount)
+        {
+            Game.Wallet.Money = amount;
+            return CLI.Result.Success("now: " + Game.Wallet.Money);
+        }
+
+        [CLI.Bind]
+        public static void Clear()
+        {
+            Game.Wallet.Money = 0;
+        }
+    }
+}
+
 public class Main : MonoBehaviour
 {
     public int SingletonPort = 1234;
@@ -37,7 +71,9 @@ public class Main : MonoBehaviour
         Channel1.Executer = new CLI.ClassExecuter(typeof(Binding1));
         Channel2.Executer = new CLI.ClassExecuter(typeof(Binding2));
         var exe = new CLI.Executer();
-        exe.Bind(typeof(Binding1)).Bind(typeof(Binding2));
+        exe.Bind(typeof(Binding1))
+            .Bind(typeof(Binding2))
+            .Bind(typeof(CLIBindings.Wallet));
         Channel3.Executer = exe;
     }
 
