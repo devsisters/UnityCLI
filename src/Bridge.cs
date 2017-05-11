@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CLI
 {
+    [AddComponentMenu("CLI/CLI.Installer")]
     public sealed class Bridge : MonoBehaviour
     {
         public static Bridge Instance;
