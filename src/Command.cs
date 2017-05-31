@@ -17,7 +17,7 @@ namespace CLI
 
         private static char[] _trimTokens = new[] { ' ', '\r', '\n', };
 
-        internal static Command Parse(string raw)
+        public static Command Parse(string raw)
         {
             var tokens = raw.Split(_trimTokens,
                 System.StringSplitOptions.RemoveEmptyEntries);

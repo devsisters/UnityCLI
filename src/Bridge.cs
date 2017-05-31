@@ -67,7 +67,7 @@ namespace CLI
         {
             if (Executer == null)
                 return Result.Error("ExecuteCmd is null");
-            return Executer.Execute(cmd, 0);
+            return Executer.Execute(cmd);
         }
     }
 }

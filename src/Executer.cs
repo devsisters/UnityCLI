@@ -17,7 +17,7 @@ namespace CLI
             ExecuteCmd = executeCmd;
         }
 
-        public Result Execute(Command cmd, int argFrom)
+        public override Result ExecuteFrom(Command cmd, int argFrom)
         {
             if (ExecuteCmd == null) return Result.Error("ExecuteCmd is not set yet.");
             return ExecuteCmd(cmd, argFrom);
@@ -53,7 +53,7 @@ namespace CLI
             _delegates.Add(m.Name, m);
         }
 
-        public Result Execute(Command cmd, int argFrom)
+        public override Result ExecuteFrom(Command cmd, int argFrom)
         {
             var methodName = cmd.Args[argFrom];
             var m = _delegates[methodName];
@@ -108,9 +108,9 @@ namespace CLI
             return this;
         }
 
-        public Result Execute(Command cmd, int argFrom)
+        public override Result ExecuteFrom(Command cmd, int argFrom)
         {
-            return _executers[cmd.Args[argFrom]].Execute(cmd, argFrom + 1);
+            return _executers[cmd.Args[argFrom]].ExecuteFrom(cmd, argFrom + 1);
         }
     }
 }

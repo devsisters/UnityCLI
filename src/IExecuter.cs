@@ -1,7 +1,8 @@
 namespace CLI
 {
-    public interface IExecuter
+    public abstract class IExecuter
     {
-        Result Execute(Command cmd, int argFrom);
+        public Result Execute(Command cmd) { return ExecuteFrom(cmd, 0); }
+        public abstract Result ExecuteFrom(Command cmd, int argFrom);
     }
 }
